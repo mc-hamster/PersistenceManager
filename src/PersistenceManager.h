@@ -53,6 +53,10 @@ public:
     // The JSON document.
     DynamicJsonDocument _doc;
 
+    // Returns the size of the file associated with this PersistenceManager instance.
+    size_t getFileSize();
+
+
 private:
     // The filename of the file to save to and load from.
     const char *_filename;

@@ -5,10 +5,11 @@
 // Here, we're specifying a maximum size of 4096 bytes.
 PersistenceManager manager("/data.json", 4096);
 
-void setup() {
+void setup()
+{
   Serial.begin(115200);
-  
-  // Set some key-value pairs.  
+
+  // Set some key-value pairs.
   manager.set("key1", "value1");
   manager.set("key2", 42);
 
@@ -24,16 +25,22 @@ void setup() {
   arr.add(3);
 
   // Save the document to the file.
-  if (manager.save()) {
+  if (manager.save())
+  {
     Serial.println("Data saved successfully.");
-  } else {
+  }
+  else
+  {
     Serial.println("Failed to save data.");
   }
 
   // Check if a key exists.
-  if (manager.exists("key1")) {
+  if (manager.exists("key1"))
+  {
     Serial.println("key1 exists.");
-  } else {
+  }
+  else
+  {
     Serial.println("key1 does not exist.");
   }
 
@@ -41,38 +48,51 @@ void setup() {
   Serial.println("All keys:");
   Serial.println(manager.listKeys());
 
+  // Get and print the size of the JSON file
+  size_t fileSize = manager.getFileSize();
+  Serial.print("Size of the JSON file: ");
+  Serial.println(fileSize);
+
   // Backup the data to a different file.
-  if (manager.backup("/backup.json")) {
+  if (manager.backup("/backup.json"))
+  {
     Serial.println("Data backed up successfully.");
-  } else {
+  }
+  else
+  {
     Serial.println("Failed to backup data.");
   }
 }
 
-void loop() {
+void loop()
+{
   // Delay for a bit before reading the data back.
   delay(2000);
-  
+
   // Get and print a value.
-  Serial.println("key1: " + String(manager.get("key1").as<const char*>()));
+  Serial.println("key1: " + String(manager.get("key1").as<const char *>()));
   Serial.println("key2: " + String(manager.get("key2").as<int>()));
 
   // Get and print a nested JSON object.
   JsonObject obj = manager.get("nestedObject").as<JsonObject>();
-  Serial.println("nestedKey1: " + String(obj["nestedKey1"].as<const char*>()));
+  Serial.println("nestedKey1: " + String(obj["nestedKey1"].as<const char *>()));
   Serial.println("nestedKey2: " + String(obj["nestedKey2"].as<int>()));
 
   // Get and print an array.
   Serial.println("myArray:");
   JsonArray arr = manager.get("myArray").as<JsonArray>();
-  for(JsonVariant v : arr) {
+  for (JsonVariant v : arr)
+  {
     Serial.println(v.as<int>());
   }
 
   // Remove a key-value pair and save the data.
-  if (manager.remove("key1")) {
+  if (manager.remove("key1"))
+  {
     Serial.println("Removed key1.");
-  } else {
+  }
+  else
+  {
     Serial.println("Failed to remove key1.");
   }
 

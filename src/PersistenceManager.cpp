@@ -133,3 +133,23 @@ void PersistenceManager::_endTransaction()
 {
     xSemaphoreGive(_mutex);
 }
+
+size_t PersistenceManager::getFileSize() {
+    xSemaphoreTake(_mutex, portMAX_DELAY);
+    if (!LittleFS.begin()) {
+        Serial.println("An Error has occurred while mounting LittleFS");
+        return 0;
+    }
+
+    File file = LittleFS.open(_filename, "r");
+    if (!file) {
+        Serial.println("Failed to open file for reading");
+        return 0;
+    }
+
+    size_t fileSize = file.size();
+    file.close();
+
+    xSemaphoreGive(_mutex);
+    return fileSize;
+}
