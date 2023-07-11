@@ -53,7 +53,12 @@ pm.backup("/backup.json");
 
 ## Notes
 
-- The maximum size of the JSON document is 2048 bytes. If you need to store larger documents, you will need to increase this value.
+- The default size of the JSON document is 2048 bytes. If you need to store larger documents, you will need to increase this value.
+
+```
+PersistenceManager manager("/data.json", 4096);
+```
+
 - The library does not automatically save the document to the file after each operation. You need to call the `save` method when you want to persist the changes.
 
 ## License
