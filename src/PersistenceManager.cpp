@@ -5,6 +5,7 @@ PersistenceManager::PersistenceManager(const char *filename, size_t maxJsonSize)
     : _filename(filename), _maxJsonSize(maxJsonSize), _doc(maxJsonSize)
 {
     _mutex = xSemaphoreCreateMutex();
+
     load();
 }
 
@@ -93,15 +94,10 @@ bool PersistenceManager::backup(const char *backupFilename)
 // Load method to load the JSON document from the file
 bool PersistenceManager::load()
 {
-    if (!LittleFS.begin())
-    {
-        Serial.println("An Error has occurred while mounting LittleFS");
-        return false;
-    }
     File file = LittleFS.open(_filename, "r");
     if (!file)
     {
-        Serial.println("Failed to open file for reading");
+        Serial.println("Failed to open file for reading 1");
         return false;
     }
     deserializeJson(_doc, file);
@@ -134,16 +130,14 @@ void PersistenceManager::_endTransaction()
     xSemaphoreGive(_mutex);
 }
 
-size_t PersistenceManager::getFileSize() {
+size_t PersistenceManager::getFileSize()
+{
     xSemaphoreTake(_mutex, portMAX_DELAY);
-    if (!LittleFS.begin()) {
-        Serial.println("An Error has occurred while mounting LittleFS");
-        return 0;
-    }
 
     File file = LittleFS.open(_filename, "r");
-    if (!file) {
-        Serial.println("Failed to open file for reading");
+    if (!file)
+    {
+        Serial.println("Failed to open file for reading 2");
         return 0;
     }
 

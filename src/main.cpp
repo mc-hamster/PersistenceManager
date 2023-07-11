@@ -7,7 +7,22 @@ PersistenceManager manager("/data.json", 4096);
 
 void setup()
 {
-  Serial.begin(115200);
+  Serial.begin(921600);
+  delay(200); // Short delay to allow the serial port to initialize
+
+  Serial.println("--------------------------");
+
+  if (!LittleFS.begin())
+  {
+    Serial.println("An error occurred while mounting LittleFS, formatting...");
+    LittleFS.format();
+    if (!LittleFS.begin())
+    {
+      Serial.println("Formatting did not help. Cannot use LittleFS. Halting execution.");
+      while (1)
+        ;
+    }
+  }
 
   // Set some key-value pairs.
   manager.set("key1", "value1");
@@ -96,7 +111,8 @@ void loop()
     Serial.println("Failed to remove key1.");
   }
 
+  Serial.println(millis());
   // Clear all data and save the changes.
-  manager.clear();
-  Serial.println("Cleared all data.");
+  // manager.clear();
+  // Serial.println("Cleared all data.");
 }
