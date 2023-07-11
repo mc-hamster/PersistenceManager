@@ -24,6 +24,9 @@ void setup()
     }
   }
 
+  // Load the JSON document from the file.
+  manager.load();
+
   // Set some key-value pairs.
   manager.set("key1", "value1");
   manager.set("key2", 42);
@@ -112,6 +115,9 @@ void loop()
   }
 
   Serial.println(millis());
+
+  manager.printFileContents();
+
   // Clear all data and save the changes.
   // manager.clear();
   // Serial.println("Cleared all data.");
