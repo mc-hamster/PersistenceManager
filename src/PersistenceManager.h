@@ -4,7 +4,7 @@
 #include "Arduino.h"
 #include <ArduinoJson.h>
 #include "FS.h"
-#include "LITTLEFS.h"
+#include "LittleFS.h"
 
 // The maximum size of the JSON document.
 #define DEFAULT_JSON_SIZE 2048
@@ -56,6 +56,7 @@ public:
     // Returns the size of the file associated with this PersistenceManager instance.
     size_t getFileSize();
 
+    void printFileContents();
 
 private:
     // The filename of the file to save to and load from.

@@ -147,3 +147,29 @@ size_t PersistenceManager::getFileSize()
     xSemaphoreGive(_mutex);
     return fileSize;
 }
+
+void PersistenceManager::printFileContents()
+{
+    // Obtain the lock
+    xSemaphoreTake(_mutex, portMAX_DELAY);
+
+    // Open the file
+    File file = LittleFS.open(_filename, "r");
+    if (!file)
+    {
+        Serial.println("Failed to open file for reading");
+    }
+
+    // Read from the file and print each line
+    while (file.available())
+    {
+        String line = file.readStringUntil('\n');
+        Serial.println(line);
+    }
+
+    // Close the file
+    file.close();
+
+    // Release the lock
+    xSemaphoreGive(_mutex);
+}
